@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Follow a flight live · Windowside</title>
+<meta name="description" content="Someone shared a flight with you. See where it is right now.">
+<meta property="og:title" content="Follow this flight live">
+<meta property="og:description" content="See where the plane is right now, on a live map. Shared from Windowside.">
+<meta property="og:image" content="https://frugoman.github.io/windowside-site/icon.png">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0B0F17">
+<link rel="icon" href="../icon.png">
+<link rel="apple-touch-icon" href="../icon.png">
+<style>
+  /* Tokens mirror ios/Windowside/Design/Theme.swift (dark-only night-flight look). */
+  :root {
+    --canvas: #0B0F17; --surface: #131A26; --surface-sunk: #1B2433; --hairline: #1E2738;
+    --ink: #EEF2F7; --ink-2: #A9B4C4; --ink-3: #8792A3;
+    --accent: #FFB547; --on-accent: #1A1204; --live: #5CD6FF;
+    --serif: ui-serif, "New York", Georgia, serif;
+    --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--canvas); color: var(--ink);
+    font: 16px/1.45 -apple-system, system-ui, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: max(20px, env(safe-area-inset-top)) 16px 32px; }
+  header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  header img { width: 32px; height: 32px; border-radius: 8px; }
+  header span { font-family: var(--serif); font-weight: 700; font-size: 18px; }
+  .eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .12em; color: var(--live); text-transform: uppercase; }
+  h1 { font-family: var(--serif); font-size: clamp(28px, 7vw, 40px); line-height: 1.1; margin: 8px 0 6px; }
+  .sub { color: var(--ink-2); margin: 0 0 16px; }
+  .code { font-family: var(--mono); color: var(--ink-2); font-size: 14px; }
+  .map { position: relative; height: min(62vh, 560px); border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--hairline); background: var(--surface); }
+  /* ADSB.lol pins its aircraft panel to the left; widen the frame past our left edge so the plane stays visible. */
+  .map iframe { width: calc(100% + 210px); margin-left: -210px; height: 100%; border: 0; display: block; }
+  .note { color: var(--ink-3); font-size: 13px; margin: 10px 2px 22px; }
+  .note a { color: var(--ink-2); }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn { flex: 1 1 220px; display: flex; align-items: center; justify-content: center; min-height: 48px;
+    border-radius: 14px; font-weight: 600; text-decoration: none; }
+  .primary { background: var(--accent); color: var(--on-accent); }
+  .secondary { background: var(--surface-sunk); color: var(--ink); }
+  .card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 20px; padding: 20px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <header><img src="../icon.png" alt=""><span>Windowside</span></header>
+
+  <section id="flight" hidden>
+    <div class="eyebrow" data-t="live">Live flight</div>
+    <h1 id="title"></h1>
+    <p class="sub"><span id="airline"></span> <span class="code" id="codes"></span></p>
+    <div class="map"><iframe id="map" title="Live map" referrerpolicy="no-referrer"></iframe></div>
+    <p class="note"><span data-t="credit">Live map and positions by</span> <a href="https://adsb.lol" rel="noopener">ADSB.lol</a> <span data-t="credit2">community receivers (ODbL). Route from</span> <a href="https://www.adsbdb.com" rel="noopener">adsbdb.com</a>. <span data-t="gaps">Over the ocean the plane can disappear for a while.</span></p>
+    <div class="actions">
+      <a class="btn primary" id="open" data-t="open">Open in Windowside</a>
+    </div>
+  </section>
+
+  <section id="missing" class="card" hidden>
+    <h1 data-t="missingTitle">This link has no flight</h1>
+    <p class="sub" data-t="missingBody">Ask whoever sent it to share it again from Windowside.</p>
+  </section>
+</main>
+<script>
+(() => {
+  const es = (navigator.language || "en").toLowerCase().startsWith("es");
+  const T = es ? {
+    live: "Vuelo en vivo", credit: "Mapa y posiciones de", credit2: "receptores comunitarios (ODbL). Ruta de",
+    gaps: "Sobre el océano el avión puede desaparecer un rato.", open: "Abrir en Windowside",
+    missingTitle: "Este enlace no tiene vuelo", missingBody: "Pídele a quien lo envió que lo comparta otra vez desde Windowside.",
+    doc: "Sigue un vuelo en vivo · Windowside"
+  } : { doc: "Follow a flight live · Windowside" };
+  document.documentElement.lang = es ? "es" : "en";
+  document.querySelectorAll("[data-t]").forEach(el => { const v = T[el.dataset.t]; if (v) el.textContent = v; });
+  document.title = T.doc;
+
+  const q = new URLSearchParams(location.search);
+  const raw = (q.get("n") || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  const hex = (q.get("h") || "").toLowerCase();
+  if (!/^[A-Z0-9]{3,8}$/.test(raw)) { document.getElementById("missing").hidden = false; return; }
+
+  const pretty = /^[A-Z0-9]{2}\d/.test(raw) && raw.length <= 6 ? raw.slice(0, 2) + " " + raw.slice(2) : raw;
+  document.getElementById("title").textContent = pretty;
+  document.getElementById("open").href = "windowside://follow/" + raw;
+  document.getElementById("flight").hidden = false;
+
+  const mapURL = callsign => {
+    const p = new URLSearchParams({ hideSidebar: "", hideButtons: "", desktop: "", zoom: "6" });
+    if (/^[0-9a-f]{6}$/.test(hex)) p.set("icao", hex); else if (callsign) p.set("callsign", callsign);
+    return "https://adsb.lol/?" + p.toString().replace(/=(&|$)/g, "$1");
+  };
+
+  fetch("https://api.adsbdb.com/v0/callsign/" + raw)
+    .then(r => r.ok ? r.json() : null)
+    .then(j => {
+      const r = j && j.response && j.response.flightroute;
+      if (!r) { document.getElementById("map").src = mapURL(raw); return; }
+      const city = a => a.municipality || a.name;
+      document.getElementById("title").textContent = pretty + " · " + city(r.origin) + " → " + city(r.destination);
+      document.getElementById("airline").textContent = (r.airline && r.airline.name) || "";
+      document.getElementById("codes").textContent = r.origin.iata_code + " → " + r.destination.iata_code;
+      document.getElementById("map").src = mapURL(r.callsign_icao || raw);
+    })
+    .catch(() => { document.getElementById("map").src = mapURL(raw); });
+})();
+</script>
+</body>
+</html>
