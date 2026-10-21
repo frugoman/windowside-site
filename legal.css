@@ -1,0 +1,18 @@
+/* Tokens mirror ios/Windowside/Design/Theme.swift (dark-only night-flight look). */
+:root { --canvas: #0B0F17; --surface: #131A26; --hairline: #1E2738; --ink: #EEF2F7; --ink-2: #A9B4C4; --ink-3: #8792A3; --accent: #FFB547;
+  --serif: ui-serif, "New York", Georgia, serif; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--canvas); color: var(--ink); font: 17px/1.55 -apple-system, system-ui, sans-serif; }
+main { max-width: 680px; margin: 0 auto; padding: 48px 20px 64px; }
+header { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+header img { width: 36px; height: 36px; border-radius: 9px; }
+header a { color: var(--ink); text-decoration: none; font-family: var(--serif); font-weight: 700; font-size: 20px; }
+h1 { font-family: var(--serif); font-size: 36px; line-height: 1.15; margin: 0 0 6px; }
+h2 { font-family: var(--serif); font-size: 22px; margin: 32px 0 8px; }
+p, li { color: var(--ink-2); }
+a { color: var(--accent); }
+.meta { color: var(--ink-3); font-size: 14px; margin-bottom: 28px; }
+.card { background: var(--surface); border: 1px solid var(--hairline); border-radius: 20px; padding: 20px; margin: 16px 0; }
+nav { margin-top: 40px; font-size: 14px; color: var(--ink-3); }
+nav a { margin-right: 14px; }
+section[lang]:not(.on) { display: none; }

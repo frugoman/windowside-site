@@ -3,23 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Windowside</title>
-<meta name="description" content="A flight logbook, live tracker and window-seat guide built on free, public data.">
+<title>Windowside · Flight tracker, flight log and window-seat guide</title>
+<meta name="description" content="Windowside is a free flight tracker, flight log and window-seat guide for iPhone: log every flight on a 3D globe, follow flights live, see planes above you and what's out your window. Your flights stay on your phone.">
+<meta property="og:title" content="Windowside: flight tracker, flight log and window-seat guide">
+<meta property="og:description" content="Log every flight on a globe, follow flights live, and know what's out your window. Free, no account.">
+<meta property="og:image" content="https://frugoman.github.io/windowside-site/icon.png">
+<meta name="apple-itunes-app" content="app-id=6823342075">
 <meta name="theme-color" content="#0B0F17">
 <link rel="icon" href="icon.png">
+<link rel="stylesheet" href="legal.css">
 <style>
-  html, body { margin: 0; background: #0B0F17; color: #EEF2F7; font: 17px/1.5 -apple-system, system-ui, sans-serif; }
-  main { max-width: 560px; margin: 0 auto; padding: 64px 20px; }
-  img { width: 72px; height: 72px; border-radius: 16px; }
-  h1 { font-family: ui-serif, "New York", Georgia, serif; font-size: 40px; margin: 20px 0 8px; }
-  p { color: #A9B4C4; }
+  .hero img { width: 88px; height: 88px; border-radius: 20px; }
+  .hero h1 { font-size: 42px; margin-top: 18px; }
+  .cta { display: inline-block; margin: 18px 0 8px; padding: 14px 22px; border-radius: 14px; background: var(--accent); color: #1A1204; font-weight: 600; text-decoration: none; }
+  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 24px; }
+  .grid .card { margin: 0; }
+  .grid h2 { margin-top: 0; font-size: 19px; }
 </style>
 </head>
-<body>
-<main>
-  <img src="icon.png" alt="">
-  <h1>Windowside</h1>
-  <p>Your flight logbook, a live tracker and a window-seat guide. Built on free, public flight data; your flights stay on your phone.</p>
-</main>
-</body>
-</html>
+<body><main>
+<section lang="en" class="hero">
+  <img src="icon.png" alt="Windowside app icon">
+  <h1>Your flights, on a globe. What's out your window, on board.</h1>
+  <p>Windowside is a free flight log, live flight tracker and window-seat guide for iPhone. No account, no ads, and your flights stay on your phone.</p>
+  <a class="cta" href="https://apps.apple.com/app/id6823342075">Download on the App Store</a>
+  <div class="grid">
+    <div class="card"><h2>Flight log</h2><p>Every flight on a 3D globe: distance, countries, airports, time in the air and how far you've flown toward the Moon.</p></div>
+    <div class="card"><h2>Find past flights</h2><p>From your calendar, boarding-pass screenshots, photo locations, or exports from Flightradar24, Flighty and more.</p></div>
+    <div class="card"><h2>Live flight tracker</h2><p>Follow any flight live, get a landing alert on the Lock Screen and share a live link.</p></div>
+    <div class="card"><h2>Window-seat guide</h2><p>Mountains, cities and coastlines on your left and right, from GPS, even in airplane mode.</p></div>
+    <div class="card"><h2>Planes above you</h2><p>See which planes fly over you, as a list or through the camera.</p></div>
+    <div class="card"><h2>Pre-flight brief</h2><p>Which side the sun is on, turbulence warnings on your route and a jet-lag plan.</p></div>
+  </div>
+</section>
+<section lang="es" class="hero">
+  <img src="icon.png" alt="Ícono de Windowside">
+  <h1>Tus vuelos, en un globo. Lo que hay por tu ventanilla, a bordo.</h1>
+  <p>Windowside es una bitácora de vuelos, un rastreador de vuelos en vivo y una guía de ventanilla gratis para iPhone. Sin cuenta, sin publicidad, y tus vuelos se quedan en tu teléfono.</p>
+  <a class="cta" href="https://apps.apple.com/app/id6823342075">Descargar en el App Store</a>
+  <div class="grid">
+    <div class="card"><h2>Bitácora de vuelos</h2><p>Cada vuelo en un globo 3D: distancia, países, aeropuertos, horas en el aire y cuánto llevas volado hacia la Luna.</p></div>
+    <div class="card"><h2>Encuentra tus vuelos</h2><p>Desde tu calendario, capturas de tarjetas de embarque, la ubicación de tus fotos o exportaciones de Flightradar24, Flighty y más.</p></div>
+    <div class="card"><h2>Rastreador de vuelos en vivo</h2><p>Sigue cualquier vuelo en vivo, recibe un aviso de aterrizaje en la pantalla bloqueada y comparte un enlace en vivo.</p></div>
+    <div class="card"><h2>Guía de ventanilla</h2><p>Montañas, ciudades y costas a tu izquierda y derecha, con GPS, incluso en modo avión.</p></div>
+    <div class="card"><h2>Aviones sobre ti</h2><p>Mira qué aviones pasan sobre ti, en lista o con la cámara.</p></div>
+    <div class="card"><h2>Resumen antes de volar</h2><p>De qué lado estará el sol, avisos de turbulencia en tu ruta y un plan para el jet lag.</p></div>
+  </div>
+</section>
+<nav><a href="privacy/">Privacy · Privacidad</a><a href="support/">Support · Soporte</a><a href="terms/">Terms · Términos</a><a href="?lang=en">English</a><a href="?lang=es">Español</a></nav>
+</main><script src="lang.js"></script></body></html>
